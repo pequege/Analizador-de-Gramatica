@@ -6,9 +6,6 @@ public class Principal {
     Gramatica gramatica = new Gramatica(asd);
     gramatica.mostrarGramatica();
     gramatica.analizarJerarquia();
-    //String a = "Jamiroquai";
-    //a.replace("Jami", "Tu Hermana");
-    //System.out.println(a);
-    gramatica.derivarPalabra();
+    //gramatica.derivarPalabra();
   }
 }

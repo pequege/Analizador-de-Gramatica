@@ -3,10 +3,10 @@ import java.util.ArrayList;
 
 public class Gramatica {
     public ArrayList<Regla> reglasDeProduccion = new ArrayList<>();
-    public Regla axioma;
+    public ArrayList<Regla> axioma = new ArrayList<>();
     public int tipo;
 
-  public void setAxioma(Regla axioma) {
+  public void setAxioma (ArrayList<Regla> axioma) {
     this.axioma = axioma;
   }
 
@@ -14,15 +14,16 @@ public class Gramatica {
     this.tipo = tipo;
   }
 
-  public Regla getAxioma() {
+  public ArrayList<Regla> getAxioma() {
     return axioma;
   }
 
   public Gramatica(String gramatica) throws IOException {
     ArrayList<Regla> reglas = Regla.crearReglas(gramatica);
     for (int i = 0; i < reglas.size(); i++){
-      if(i == 0){
-        setAxioma(reglas.get(i));
+      String parteIzquierda = reglas.get(i).getParteIzquierda();
+      if(parteIzquierda.equals("S")){
+        axioma.add(reglas.get(i));
       }else {
         reglasDeProduccion.add(reglas.get(i));
       }
@@ -31,14 +32,19 @@ public class Gramatica {
 
   public void mostrarGramatica(){
     System.out.println("Axioma: ");
-    axioma.mostrarRegla();
+    for (Regla axiomas: axioma) {
+      axiomas.mostrarRegla();
+    }
+    System.out.println("Reglas de produccion: ");
     for (Regla reglaProduccion: reglasDeProduccion) {
       reglaProduccion.mostrarRegla();
     }
   }
 
   public void analizarJerarquia (){
-    setTipo(AnalizadorDeJerarquia.verificarTipo(axioma));
+    for (Regla axiomas :axioma) {
+      setTipo(AnalizadorDeJerarquia.verificarTipo(axiomas));
+    }
     for (Regla regla: reglasDeProduccion) {
       if (tipo > AnalizadorDeJerarquia.verificarTipo(regla)){
         setTipo(AnalizadorDeJerarquia.verificarTipo(regla));
@@ -48,7 +54,7 @@ public class Gramatica {
   }
 
   public void derivarPalabra(){
-    String palabra = Derivador.derivarPalabra(axioma, reglasDeProduccion);
-    System.out.println("Palabra derivada: " + palabra);
+    //String palabra = Derivador.derivarPalabra(axioma, reglasDeProduccion);
+    //System.out.println("Palabra derivada: " + palabra);
   }
 }
