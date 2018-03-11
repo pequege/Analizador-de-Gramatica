@@ -22,10 +22,15 @@ public class Gramatica {
     ArrayList<Regla> reglas = Regla.crearReglas(gramatica);
     for (int i = 0; i < reglas.size(); i++){
       String parteIzquierda = reglas.get(i).getParteIzquierda();
-      if(parteIzquierda.equals("S")){
-        axioma.add(reglas.get(i));
+      if (Regla.verificarRegla(parteIzquierda)){
+        if(parteIzquierda.equals("S")){
+          axioma.add(reglas.get(i));
+        }else {
+          reglasDeProduccion.add(reglas.get(i));
+        }
       }else {
-        reglasDeProduccion.add(reglas.get(i));
+        System.err.println("ERROR: no se puede crear gramática");
+        break;
       }
     }
   }
@@ -54,7 +59,7 @@ public class Gramatica {
   }
 
   public void derivarPalabra(){
-    //String palabra = Derivador.derivarPalabra(axioma, reglasDeProduccion);
-    //System.out.println("Palabra derivada: " + palabra);
+    String palabra = Derivador.derivarPalabra(axioma, reglasDeProduccion);
+    System.out.println("Palabra derivada: " + palabra);
   }
 }

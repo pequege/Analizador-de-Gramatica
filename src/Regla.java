@@ -12,15 +12,17 @@ public class Regla {
     String[] lineas = LectordeTexto.separarLinea(gramatica);
     for (String linea : lineas) {
       Regla regla = crearRegla(linea);
-      reglas.add(regla);
+      if (regla.getParteDerecha() != "#"){
+        reglas.add(regla);
+      }
     }
     return reglas;
   }
 
   //CREA REGLA A PARTIR DE UNA LINEA DE TEXTO
   public static Regla crearRegla (String linea) {
-    String[] partes = separarPartes(linea);
-    Regla regla = new Regla(partes[0], partes[1]);
+    ArrayList<String> partes = separarPartes(linea);
+    Regla regla = new Regla(partes.get(0), partes.get(1));
     return regla;
   }
 
@@ -31,9 +33,29 @@ public class Regla {
   }
 
   //SEPARADOR DE PARTE IZQ Y DER DE UNA REGLA
-  public static String[] separarPartes (String a) {
-    String[] partes = a.split(" → ");
+  public static ArrayList<String> separarPartes (String a) {
+    ArrayList<String> partes = new ArrayList<>();
+    String[] parte = a.split(" → ");
+    for (int i = 0; i < parte.length; i++){
+      partes.add(parte[i]);
+    }
+    validarQueLasPartesNoEstenVacias(partes);
     return partes;
+  }
+
+  //SI LA PARTE IZQUIERDA O DERECHA ESTÁ VACÍA, DETIENE EL PROGRAMA
+  private static void validarQueLasPartesNoEstenVacias (ArrayList<String> partes) {
+    switch (partes.size()){
+      case 0:
+        System.err.println("Gramática inválida: parte izquierda no puede estar vacía");
+        System.exit(1);
+        break;
+      case 1:
+        partes.add("#");
+        break;
+      default:
+        break;
+    }
   }
 
   //GETS
@@ -50,14 +72,24 @@ public class Regla {
     System.out.println(getParteIzquierda() + " → " + getParteDerecha());
   }
 
-  //CUENTA LA CANTIDAD DE NO TERMINALES DE LA PARTE DERECHA DE UNA REGLA
-  public int contarNoTerminales () {
+  //CUENTA LA CANTIDAD DE NO TERMINALES DE UNA REGLA
+  public static int contarNoTerminales (String parte) {
     int terminales = 0;
-    for (int i = 0; i < this.getParteDerecha().length(); i++) {
-      if (Character.isUpperCase(this.getParteDerecha().charAt(i))) {
+    for (int i = 0; i < parte.length(); i++) {
+      if (Character.isUpperCase(parte.charAt(i))) {
         terminales++;
       }
     }
     return terminales;
+  }
+
+  //VERIFICAR FORMATO DE REGLA
+  public static boolean verificarRegla(String regla){
+    boolean bandera = false;
+    String parteIzquierda = regla;
+    if (parteIzquierda.length() > 0 && contarNoTerminales(parteIzquierda) > 0){
+      bandera = true;
+    }
+    return bandera;
   }
 }

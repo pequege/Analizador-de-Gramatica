@@ -30,10 +30,12 @@ public class AnalizadorDeJerarquia {
       if (terminaConNoTerminal(regla)){
         return 5;
       }else {
-        return 3;
+        return 2;
       }
     }
   }
+
+
 
   //VERIFICA QUE LA LONGITUD DE LA PARTE IZQUIERDA SEA IGUAL A 1
   public static boolean longitudParteIzquierdaIgualA1 (Regla regla){
@@ -72,7 +74,7 @@ public class AnalizadorDeJerarquia {
   //VERIFICA QUE HAYA UNO O MENOS NO TERMINALES EN LA PARTE DERECHA
   public static boolean hayUnoOMenosNoTerminales (Regla regla){
     boolean bandera = false;
-    int noTerminales = regla.contarNoTerminales();
+    int noTerminales = Regla.contarNoTerminales(String.valueOf(regla));
     bandera = noTerminales <= 1;
     return bandera;
   }

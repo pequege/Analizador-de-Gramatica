@@ -1,4 +1,5 @@
 S → AB
 S → λ
-A → e
-B → s
+A → eda
+A → λ
+B → AsdA

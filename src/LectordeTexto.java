@@ -7,6 +7,7 @@ public class LectordeTexto {
   static String leerArchivo(String urlArchivo, Charset cifrado) throws IOException {
     byte[] encoded = Files.readAllBytes(Paths.get(urlArchivo));
     String texto = new String(encoded, cifrado);
+    texto = borrarLambda(texto);
     return texto;
   }
 
@@ -14,5 +15,11 @@ public class LectordeTexto {
     String textoTemporal = leerArchivo(texto, Charset.defaultCharset());
     String lineas[] = textoTemporal.split("\\r?\\n");
     return lineas;
+  }
+
+  //BORRAR SIMBOLO LAMBDA
+  static String borrarLambda(String texto){
+    texto = texto.replace("λ", "");
+    return texto;
   }
 }
